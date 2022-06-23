@@ -22,7 +22,7 @@ public class TaskEntity  {
     @GeneratedValue
     private Long id;
     @Column(name = "Parent_id")
-    private int parentId;
+    private Long parentId;
     @Column(name = "title")
     private String title;
     @Column(name = "_describe")
