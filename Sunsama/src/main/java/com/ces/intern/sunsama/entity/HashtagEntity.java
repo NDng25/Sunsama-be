@@ -15,7 +15,7 @@ import java.util.Objects;
 public class HashtagEntity {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     public HashtagEntity(String name) {
         this.name = name;
@@ -33,7 +33,7 @@ public class HashtagEntity {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         HashtagEntity that = (HashtagEntity) obj;
-        return id.equals(that.id);
+        return id == that.id;
     }
 
     @Override

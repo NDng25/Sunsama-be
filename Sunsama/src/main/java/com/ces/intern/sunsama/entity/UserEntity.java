@@ -1,9 +1,6 @@
 package com.ces.intern.sunsama.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -11,13 +8,13 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
-
+@AllArgsConstructor
 @Entity
 @Table(name = "user", schema ="public")
 public class UserEntity  {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
     @Column(name = "name")
     private String name;
     @Column(name = "password")
@@ -32,7 +29,7 @@ public class UserEntity  {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         UserEntity that = (UserEntity) obj;
-        return id.equals(that.id);
+        return id == that.id;
     }
 
     @Override
