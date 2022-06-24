@@ -1,8 +1,7 @@
 package com.ces.intern.sunsama;
 
-import com.ces.intern.sunsama.dto.HashtagDTO;
-import com.ces.intern.sunsama.entity.HashtagEntity;
-import com.ces.intern.sunsama.reponsitory.HashtagRepository;
+
+import com.ces.intern.sunsama.repository.HashtagRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
