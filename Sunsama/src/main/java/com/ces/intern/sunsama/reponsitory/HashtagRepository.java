@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HashtagRepository extends JpaRepository<HashtagEntity,Long>
 {
-Integer countByName(String name);
+    Integer countByName(String name);
+
+
 }

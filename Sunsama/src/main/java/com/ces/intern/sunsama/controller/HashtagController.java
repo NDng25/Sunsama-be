@@ -1,6 +1,6 @@
 package com.ces.intern.sunsama.controller;
 
-import com.ces.intern.sunsama.http.request.HashtagRequest;
+import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.service.HashtagService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,13 @@ public class HashtagController {
         return hashtagService.getAllHashtag();
     }
     @PostMapping("/")
-    public String createHashtag(@RequestBody HashtagRequest hashtagRequest)
+    public String createHashtag(@RequestBody HashtagDTO hashtagDTO)
     {
-        return hashtagService.save(hashtagRequest);
+        return hashtagService.save(hashtagDTO);
+    }
+    @PutMapping("/{id}")
+    public HashtagDTO updateHashtag(@RequestBody HashtagDTO userRequest)
+    {
+        return hashtagService.update(userRequest);
     }
 }
