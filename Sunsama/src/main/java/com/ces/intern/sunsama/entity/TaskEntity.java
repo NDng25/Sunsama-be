@@ -20,9 +20,9 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.name;
 public class TaskEntity  {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
     @Column(name = "Parent_id")
-    private Long parentId;
+    private long parentId;
     @Column(name = "title")
     private String title;
     @Column(name = "_describe")
@@ -57,7 +57,7 @@ public class TaskEntity  {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         TaskEntity that = (TaskEntity) obj;
-        return id.equals(that.id);
+        return id == that.id;
     }
 
     @Override
