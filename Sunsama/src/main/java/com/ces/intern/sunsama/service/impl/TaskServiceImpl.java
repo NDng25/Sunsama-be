@@ -61,7 +61,8 @@ public class TaskServiceImpl implements TaskService {
         }
         TaskEntity newTask = modelMapper.map(request,TaskEntity.class);
         newTask.setUser(user);
-        newTask.setHashtags(hashtagEntities);
+        newTask.setHashtags(new ArrayList<>());
+        hashtagEntities.forEach(tag -> newTask.getHashtags().add(tag));
         TaskEntity taskCreated = taskRepository.save(newTask);
         Collection<TaskEntity> userTasks = user.getTasks();
         if(userTasks == null){
@@ -88,5 +89,14 @@ public class TaskServiceImpl implements TaskService {
         task.setDueDate(request.getDueDate());
         task = taskRepository.save(task);
         return modelMapper.map(task, TaskDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTask(long id) {
+        TaskEntity taskEntity = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Invalid id"));
+        taskEntity.getUser().getTasks().remove(taskEntity);
+        taskRepository.deleteById(taskEntity.getId());
     }
 }
