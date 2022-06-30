@@ -32,14 +32,10 @@ public class HashtagServiceImpl implements HashtagService
 
     @Override
     public List getAllHashtag() {
-        List listHastag = new ArrayList<>();
-
-        hashtagRepository.findAll().forEach(listHastag::add);
-
+        List listHashtag = new ArrayList<>();
+        hashtagRepository.findAll().forEach(listHashtag::add);
         Type listType = new TypeToken<List<HashtagDTO>>() {}.getType();
-
-        List<HashtagDTO> projectDTOS = modelMapper.map(listHastag,listType);
-        return projectDTOS;
+        return  modelMapper.map(listHashtag,listType);
     }
 
     @Override
@@ -60,10 +56,9 @@ public class HashtagServiceImpl implements HashtagService
     @Override
     public HashtagDTO update(HashtagDTO hashtagDTO) {
     HashtagEntity hashtagEntity=hashtagRepository.findById(hashtagDTO.getId())
-            .orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
+            .orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_HASHTAG.getMessage()));
     hashtagEntity.setName(hashtagDTO.getName());
     hashtagRepository.save(hashtagEntity);
-
     return hashtagDTO ;
 }
 }
