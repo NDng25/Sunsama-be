@@ -4,7 +4,7 @@ import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.http.request.HashtagRequest;
 import com.ces.intern.sunsama.http.exception.AlreadyExistException;
-import com.ces.intern.sunsama.reponsitory.HashtagRepository;
+import com.ces.intern.sunsama.repository.HashtagRepository;
 import com.ces.intern.sunsama.service.HashtagService;
 import com.ces.intern.sunsama.util.ExceptionMessage;
 import com.ces.intern.sunsama.util.ReponseMessage;
