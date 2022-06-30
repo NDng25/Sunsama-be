@@ -13,14 +13,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class data {
     private  static  final Logger logger = LoggerFactory.getLogger(data.class);
-    @Bean
-    CommandLineRunner initDatabase(HashtagRepository hashtagRepository, UserRepository userRepository) {
-        return args -> {
-            userRepository.save(new UserEntity(1L,"testUser", "123456", null));
-            userRepository.findAll()
-                    .forEach(user -> logger.info("Preloaded " + user));
-            hashtagRepository.save(new HashtagEntity(1L, "General", null));
-            hashtagRepository.findAll().forEach(i -> logger.info("Preloaded " + i.getId()));
-        };
-    }
+//    @Bean
+//    CommandLineRunner initDatabase(HashtagRepository hashtagRepository, UserRepository userRepository) {
+//        return args -> {
+//            userRepository.save(new UserEntity(1L,"testUser", "123456", null));
+//            userRepository.findAll()
+//                    .forEach(user -> logger.info("Preloaded " + user));
+//            hashtagRepository.save(new HashtagEntity(1L, "General", null));
+//            hashtagRepository.findAll().forEach(i -> logger.info("Preloaded " + i.getId()));
+//        };
+//    }
 }

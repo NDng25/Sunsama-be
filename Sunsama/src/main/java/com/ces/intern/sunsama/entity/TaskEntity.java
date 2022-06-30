@@ -14,8 +14,6 @@ import static com.fasterxml.jackson.databind.util.ClassUtil.name;
 @AllArgsConstructor
 @Entity
 @Table(name = "task", schema ="public")
-//@AttributeOverride(name = "id", column =  @Column(name="task_id"))
-//@SequenceGenerator(name = "generator", sequenceName = "task_id_seq", schema = "public", allocationSize = 1)
 
 public class TaskEntity  {
     @Id
@@ -37,14 +35,14 @@ public class TaskEntity  {
 
     @ManyToOne(cascade =CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+//    @ToString.Exclude
     @JoinColumn(name="user_id", nullable = false)
     private UserEntity user;
 
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
-    @ToString.Exclude
+//    @ToString.Exclude
     @JoinTable(name = "task_hastag",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "hastag_id")
