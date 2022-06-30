@@ -43,7 +43,7 @@ public class HashtagServiceImpl implements HashtagService
     public String save(HashtagDTO hashtagDTO) {
         if(hashtagRepository.countByName(hashtagDTO.getName())>=1)
         {
-            throw new AlreadyExistException(ExceptionMessage.Hashtag_ALREADY_EXIST.getMessage());
+            throw new AlreadyExistException(ExceptionMessage.HASHTAG_ALREADY_EXIST.getMessage());
         }
         else
         {
