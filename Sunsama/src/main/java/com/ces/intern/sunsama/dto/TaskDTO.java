@@ -18,5 +18,5 @@ public class TaskDTO extends BaseDTO{
     private Date dueDate;
     private boolean status;
     private UserDTO user;
-    private Collection<HashtagDTO> hashtags;
+    private Collection<HashtagDTO> hastags;
 }
