@@ -4,10 +4,11 @@ import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.http.exception.AlreadyExistException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
+import com.ces.intern.sunsama.http.response.HashtagReponse;
 import com.ces.intern.sunsama.repository.HashtagRepository;
 import com.ces.intern.sunsama.service.HashtagService;
 import com.ces.intern.sunsama.util.ExceptionMessage;
-import com.ces.intern.sunsama.util.ReponseMessage;
+import com.ces.intern.sunsama.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +37,10 @@ public class HashtagServiceImpl implements HashtagService
 
         hashtagRepository.findAll().forEach(listHastag::add);
 
-        Type listType = new TypeToken<List<HashtagDTO>>() {}.getType();
+        Type listType = new TypeToken<List<HashtagReponse>>() {}.getType();
 
-        List<HashtagDTO> projectDTOS = modelMapper.map(listHastag,listType);
-        return projectDTOS;
+        List<HashtagReponse> hashtagReponses = modelMapper.map(listHastag,listType);
+        return hashtagReponses;
     }
 
     @Override
@@ -54,16 +55,20 @@ public class HashtagServiceImpl implements HashtagService
             HashtagEntity hashtagEntity=modelMapper.map(hashtagDTO,HashtagEntity.class);
             hashtagRepository.save(hashtagEntity);
         }
-        return ReponseMessage.CREATE_SUCCESS;
+        return ResponseMessage.CREATE_SUCCESS;
     }
 
     @Override
-    public HashtagDTO update(HashtagDTO hashtagDTO) {
-    HashtagEntity hashtagEntity=hashtagRepository.findById(hashtagDTO.getId())
+    public HashtagReponse update(HashtagReponse hashtagReponse) {
+    HashtagEntity hashtagEntity=hashtagRepository.findById(hashtagReponse.getId())
             .orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
-    hashtagEntity.setName(hashtagDTO.getName());
+    hashtagEntity.setName(hashtagReponse.getName());
     hashtagRepository.save(hashtagEntity);
-
-    return hashtagDTO ;
+    return hashtagReponse ;
 }
+
+    @Override
+    public void delete(Long id) {
+       hashtagRepository.deleteById(id);
+    }
 }

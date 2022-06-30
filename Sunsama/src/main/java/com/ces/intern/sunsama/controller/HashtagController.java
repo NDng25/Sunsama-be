@@ -1,7 +1,9 @@
 package com.ces.intern.sunsama.controller;
 
 import com.ces.intern.sunsama.dto.HashtagDTO;
+import com.ces.intern.sunsama.http.response.HashtagReponse;
 import com.ces.intern.sunsama.service.HashtagService;
+import com.ces.intern.sunsama.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +32,15 @@ public class HashtagController {
         return hashtagService.save(hashtagDTO);
     }
     @PutMapping("/{id}")
-    public HashtagDTO updateHashtag(@RequestBody HashtagDTO userRequest)
+    public HashtagReponse updateHashtag(@RequestBody HashtagReponse hashtagRequest)
     {
-        return hashtagService.update(userRequest);
+        return hashtagService.update(hashtagRequest);
+    }
+    @DeleteMapping(value = "/{hashtagId}")
+
+    public String deleteHashtag(@PathVariable Long hashtagId)
+    {
+        hashtagService.delete(hashtagId);
+        return ResponseMessage.DELETE_SUCCESS;
     }
 }

@@ -50,7 +50,7 @@ public class TaskEntity  {
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "hastag_id")
     )
-    private Collection<HashtagEntity> hastags;
+    private Collection<HashtagEntity> hashtags;
 
     @Override
     public boolean equals(Object obj) {
