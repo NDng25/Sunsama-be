@@ -62,7 +62,7 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity newTask = modelMapper.map(request,TaskEntity.class);
         System.out.println("newTask" + newTask.toString());
         newTask.setUser(user);
-        newTask.setHastags(hashtagEntities);
+        newTask.setHashtags(hashtagEntities);
         TaskEntity taskCreated = taskRepository.save(newTask);
         log.debug("Task created: "+taskCreated);
         Collection<TaskEntity> userTasks = user.getTasks();
