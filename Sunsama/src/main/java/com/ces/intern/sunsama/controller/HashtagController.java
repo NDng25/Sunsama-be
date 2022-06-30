@@ -20,7 +20,6 @@ public class HashtagController {
         this.modelMapper = modelMapper;
         this.hashtagService = hashtagService;
     }
-
     @GetMapping("")
     public List getAllHashtag()
     {
@@ -37,7 +36,6 @@ public class HashtagController {
         return hashtagService.update(hashtagRequest);
     }
     @DeleteMapping(value = "/{hashtagId}")
-
     public String deleteHashtag(@PathVariable Long hashtagId)
     {
         hashtagService.delete(hashtagId);
