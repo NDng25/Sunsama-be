@@ -3,6 +3,7 @@ package com.ces.intern.sunsama.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -19,10 +20,10 @@ public class UserEntity  {
     private String name;
     @Column(name = "password")
     private String password;
-    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private Collection<TaskEntity> tasks;
+    private Collection<TaskEntity> tasks = new ArrayList<>();
 
     @Override
     public boolean equals(Object obj) {

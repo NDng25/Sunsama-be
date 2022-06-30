@@ -62,7 +62,7 @@ public class HashtagServiceImpl implements HashtagService
             .orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_HASHTAG.getMessage()));
     hashtagEntity.setName(hashtagResponse.getName());
     hashtagRepository.save(hashtagEntity);
-    return hashtagResponse ;
+    return hashtagResponse;
 }
 
     @Override
