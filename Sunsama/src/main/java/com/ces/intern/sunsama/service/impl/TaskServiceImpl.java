@@ -1,7 +1,5 @@
 package com.ces.intern.sunsama.service.impl;
 
-import com.ces.intern.sunsama.SunsamaApplication;
-import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.entity.TaskEntity;
@@ -13,21 +11,17 @@ import com.ces.intern.sunsama.repository.TaskRepository;
 import com.ces.intern.sunsama.repository.UserRepository;
 import com.ces.intern.sunsama.service.TaskService;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
-    private final Logger log = LoggerFactory.getLogger(SunsamaApplication.class);
     private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
@@ -59,11 +53,11 @@ public class TaskServiceImpl implements TaskService {
         UserEntity user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("Invalid userId"));
         Collection<HashtagEntity> hashtagEntities = new ArrayList<>();
-        if(request.getHashtagsId().size() > 0){
+        if(!request.getHashtagsId().isEmpty()){
             System.out.println("hashtag_id"+request.getHashtagsId());
             hashtagEntities = request.getHashtagsId().stream()
                     .map((id) -> hashtagRepository.findById(id)
-                            .orElseThrow(() -> new RuntimeException("Invalid hashtag id "+ id.toString())))
+                            .orElseThrow(() -> new RuntimeException("Invalid hashtag id "+ id)))
                     .collect(Collectors.toCollection(ArrayList::new));
         }
         TaskEntity newTask = modelMapper.map(request,TaskEntity.class);
@@ -71,7 +65,6 @@ public class TaskServiceImpl implements TaskService {
         newTask.setHastags(new ArrayList<>());
         hashtagEntities.forEach(tag -> newTask.getHastags().add(tag));
         TaskEntity taskCreated = taskRepository.save(newTask);
-        log.debug("Task created: "+taskCreated);
         Collection<TaskEntity> userTasks = user.getTasks();
         if(userTasks == null){
             Collection<TaskEntity> tasks = new ArrayList<>();
@@ -81,11 +74,13 @@ public class TaskServiceImpl implements TaskService {
         else{
             Collection<TaskEntity> tasks = user.getTasks();
             tasks.add(taskCreated);
+            user.setTasks(tasks);
         }
         return modelMapper.map(taskCreated, TaskDTO.class);
     }
 
     @Override
+    @Transactional
     public TaskDTO updateTask(long id, TaskRequest request) {
         TaskEntity task = taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Invalid id"));
