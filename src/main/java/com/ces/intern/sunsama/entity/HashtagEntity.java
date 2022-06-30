@@ -23,7 +23,7 @@ public class HashtagEntity {
 
     @Column(name="hastag_name", nullable = false)
     private String name;
-    @ManyToMany(mappedBy = "hastags" ,cascade =CascadeType.ALL,fetch =FetchType.LAZY)
+    @ManyToMany(mappedBy = "hashtags" ,cascade =CascadeType.ALL,fetch =FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Collection<TaskEntity> taskEntities;
