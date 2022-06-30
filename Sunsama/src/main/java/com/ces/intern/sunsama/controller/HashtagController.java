@@ -1,7 +1,7 @@
 package com.ces.intern.sunsama.controller;
 
 import com.ces.intern.sunsama.dto.HashtagDTO;
-import com.ces.intern.sunsama.http.response.HashtagReponse;
+import com.ces.intern.sunsama.http.response.HashtagResponse;
 import com.ces.intern.sunsama.service.HashtagService;
 import com.ces.intern.sunsama.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
@@ -32,7 +32,7 @@ public class HashtagController {
         return hashtagService.save(hashtagDTO);
     }
     @PutMapping("/{id}")
-    public HashtagReponse updateHashtag(@RequestBody HashtagReponse hashtagRequest)
+    public HashtagResponse updateHashtag(@RequestBody HashtagResponse hashtagRequest)
     {
         return hashtagService.update(hashtagRequest);
     }
