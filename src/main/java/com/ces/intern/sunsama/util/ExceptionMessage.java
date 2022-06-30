@@ -7,7 +7,7 @@ public enum ExceptionMessage {
     private String message;
     ExceptionMessage(String message){
         this.message = message;
-    }git 
+    }
 
     public String getMessage() {
         return message;
