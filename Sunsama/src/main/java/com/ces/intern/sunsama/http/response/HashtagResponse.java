@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class HashtagReponse {
+public class HashtagResponse {
     private Long id;
     private String name;
 }

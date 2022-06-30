@@ -4,7 +4,7 @@ import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.http.exception.AlreadyExistException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
-import com.ces.intern.sunsama.http.response.HashtagReponse;
+import com.ces.intern.sunsama.http.response.HashtagResponse;
 import com.ces.intern.sunsama.repository.HashtagRepository;
 import com.ces.intern.sunsama.service.HashtagService;
 import com.ces.intern.sunsama.util.ExceptionMessage;
@@ -22,7 +22,6 @@ import java.util.List;
 public class HashtagServiceImpl implements HashtagService
 {
 
-
     private final HashtagRepository hashtagRepository;
     private final ModelMapper modelMapper;
     @Autowired
@@ -33,14 +32,13 @@ public class HashtagServiceImpl implements HashtagService
 
     @Override
     public List getAllHashtag() {
-        List listHastag = new ArrayList<>();
+        List listHashtag = new ArrayList<>();
 
-        hashtagRepository.findAll().forEach(listHastag::add);
+        hashtagRepository.findAll().forEach(listHashtag::add);
 
-        Type listType = new TypeToken<List<HashtagReponse>>() {}.getType();
+        Type listType = new TypeToken<List<HashtagResponse>>() {}.getType();
 
-        List<HashtagReponse> hashtagReponses = modelMapper.map(listHastag,listType);
-        return hashtagReponses;
+        return  modelMapper.map(listHashtag,listType);
     }
 
     @Override
@@ -59,12 +57,12 @@ public class HashtagServiceImpl implements HashtagService
     }
 
     @Override
-    public HashtagReponse update(HashtagReponse hashtagReponse) {
-    HashtagEntity hashtagEntity=hashtagRepository.findById(hashtagReponse.getId())
+    public HashtagResponse update(HashtagResponse hashtagResponse) {
+    HashtagEntity hashtagEntity=hashtagRepository.findById(hashtagResponse.getId())
             .orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_RECORD.getMessage()));
-    hashtagEntity.setName(hashtagReponse.getName());
+    hashtagEntity.setName(hashtagResponse.getName());
     hashtagRepository.save(hashtagEntity);
-    return hashtagReponse ;
+    return hashtagResponse ;
 }
 
     @Override
