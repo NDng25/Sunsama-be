@@ -35,15 +35,14 @@ public class TaskEntity  {
     private boolean isStatus;
 
 
-    @ManyToOne(cascade =CascadeType.ALL)
+    @ManyToOne(cascade =CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinColumn(name="user_id", nullable = false)
     private UserEntity user;
 
 
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinTable(name = "task_hastag",

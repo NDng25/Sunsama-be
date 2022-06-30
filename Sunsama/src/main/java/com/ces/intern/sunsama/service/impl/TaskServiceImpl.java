@@ -6,6 +6,7 @@ import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.entity.TaskEntity;
 import com.ces.intern.sunsama.entity.UserEntity;
+import com.ces.intern.sunsama.http.exception.NotFoundException;
 import com.ces.intern.sunsama.http.request.TaskRequest;
 import com.ces.intern.sunsama.repository.HashtagRepository;
 import com.ces.intern.sunsama.repository.TaskRepository;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
-    private final Logger log = LoggerFactory.getLogger(TaskServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(SunsamaApplication.class);
     private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
@@ -42,27 +43,33 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> getAllTask() {
-        List<TaskDTO> tasks = taskRepository.findAll()
-                .stream().map((t) -> modelMapper.map(t,TaskDTO.class)).collect(Collectors.toList());
-        return tasks;
+        List<TaskEntity> tasks = taskRepository.findAll();
+        return tasks.stream().map(task -> modelMapper.map(task, TaskDTO.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public TaskDTO getTaskById(long id) {
+        TaskEntity task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Invalid id"));
+        return modelMapper.map(task,TaskDTO.class);
     }
 
     @Override
     @Transactional
     public TaskDTO createTask(TaskRequest request) {
         UserEntity user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("Missing required information"));
+                .orElseThrow(() -> new RuntimeException("Invalid userId"));
         Collection<HashtagEntity> hashtagEntities = new ArrayList<>();
         if(request.getHashtagsId().size() > 0){
+            System.out.println("hashtag_id"+request.getHashtagsId());
             hashtagEntities = request.getHashtagsId().stream()
                     .map((id) -> hashtagRepository.findById(id)
-                            .orElseThrow(() -> new RuntimeException("Missing required information")))
-                    .toList();
+                            .orElseThrow(() -> new RuntimeException("Invalid hashtag id "+ id.toString())))
+                    .collect(Collectors.toCollection(ArrayList::new));
         }
         TaskEntity newTask = modelMapper.map(request,TaskEntity.class);
-        System.out.println("newTask" + newTask.toString());
         newTask.setUser(user);
-        newTask.setHastags(hashtagEntities);
+        newTask.setHastags(new ArrayList<>());
+        hashtagEntities.forEach(tag -> newTask.getHastags().add(tag));
         TaskEntity taskCreated = taskRepository.save(newTask);
         log.debug("Task created: "+taskCreated);
         Collection<TaskEntity> userTasks = user.getTasks();
@@ -76,5 +83,17 @@ public class TaskServiceImpl implements TaskService {
             tasks.add(taskCreated);
         }
         return modelMapper.map(taskCreated, TaskDTO.class);
+    }
+
+    @Override
+    public TaskDTO updateTask(long id, TaskRequest request) {
+        TaskEntity task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Invalid id"));
+        task.setTitle(request.getTitle());
+        task.setDescribe(request.getDescribe());
+        task.setDate(request.getDate());
+        task.setDueDate(request.getDueDate());
+        task = taskRepository.save(task);
+        return modelMapper.map(task, TaskDTO.class);
     }
 }

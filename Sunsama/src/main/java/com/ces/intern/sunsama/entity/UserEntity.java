@@ -19,7 +19,7 @@ public class UserEntity  {
     private String name;
     @Column(name = "password")
     private String password;
-    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade =CascadeType.ALL, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Collection<TaskEntity> tasks;
