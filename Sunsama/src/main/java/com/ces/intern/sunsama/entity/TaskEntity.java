@@ -48,7 +48,7 @@ public class TaskEntity  {
     @ToString.Exclude
     @JoinTable(name = "task_hashtag",
             joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "hastag_id")
+            inverseJoinColumns = @JoinColumn(name = "hashtag_id")
     )
     private Collection<HashtagEntity> hashtags;
 

@@ -1,7 +1,5 @@
 package com.ces.intern.sunsama.service.impl;
 
-import com.ces.intern.sunsama.SunsamaApplication;
-import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.entity.TaskEntity;
