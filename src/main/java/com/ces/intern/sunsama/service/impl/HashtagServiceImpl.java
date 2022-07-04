@@ -4,10 +4,11 @@ import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.http.exception.AlreadyExistException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
+import com.ces.intern.sunsama.http.response.HashtagResponse;
 import com.ces.intern.sunsama.repository.HashtagRepository;
 import com.ces.intern.sunsama.service.HashtagService;
 import com.ces.intern.sunsama.util.ExceptionMessage;
-import com.ces.intern.sunsama.util.ReponseMessage;
+import com.ces.intern.sunsama.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ import java.util.List;
 @Service
 public class HashtagServiceImpl implements HashtagService
 {
-
 
     private final HashtagRepository hashtagRepository;
     private final ModelMapper modelMapper;
@@ -50,7 +50,7 @@ public class HashtagServiceImpl implements HashtagService
             HashtagEntity hashtagEntity=modelMapper.map(hashtagDTO,HashtagEntity.class);
             hashtagRepository.save(hashtagEntity);
         }
-        return ReponseMessage.CREATE_SUCCESS;
+        return ResponseMessage.CREATE_SUCCESS;
     }
 
     @Override
@@ -61,4 +61,9 @@ public class HashtagServiceImpl implements HashtagService
     hashtagRepository.save(hashtagEntity);
     return hashtagDTO ;
 }
+
+    @Override
+    public void delete(Long id) {
+       hashtagRepository.deleteById(id);
+    }
 }
