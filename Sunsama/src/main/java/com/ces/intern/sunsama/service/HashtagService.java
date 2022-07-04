@@ -1,10 +1,14 @@
 package com.ces.intern.sunsama.service;
 
-import com.ces.intern.sunsama.http.request.HashtagRequest;
+import com.ces.intern.sunsama.dto.HashtagDTO;
+import com.ces.intern.sunsama.http.response.HashtagResponse;
 
 import java.util.List;
 
-public interface HashtagService {
+public interface HashtagService{
     List getAllHashtag();
-    String save(HashtagRequest hashtagRequest);
+    String save(HashtagDTO hashtagRequest);
+
+    HashtagResponse update(HashtagResponse hashtagDTO);
+    void delete(Long id);
 }

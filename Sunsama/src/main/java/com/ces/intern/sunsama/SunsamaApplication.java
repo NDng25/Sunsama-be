@@ -27,14 +27,14 @@ public class SunsamaApplication {
         return modelMapper;
     }
 
-    @Bean
-    CommandLineRunner initDatabase(UserRepository userRepository) {
-        Logger log = LoggerFactory.getLogger(SunsamaApplication.class);
-        return args -> {
-            userRepository.save(new UserEntity(1L,"testUser", "123456", null));
-            userRepository.findAll()
-                    .forEach(user -> log.info("Preloaded " + user));
-        };
-    }
+//    @Bean
+//    CommandLineRunner initDatabase(UserRepository userRepository) {
+//        Logger log = LoggerFactory.getLogger(SunsamaApplication.class);
+//        return args -> {
+//            userRepository.save(new UserEntity(1L,"testUser", "123456", null));
+//            userRepository.findAll()
+//                    .forEach(user -> log.info("Preloaded " + user));
+//        };
+//    }
 
 }

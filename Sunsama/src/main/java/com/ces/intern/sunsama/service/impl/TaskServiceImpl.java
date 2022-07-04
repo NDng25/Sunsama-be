@@ -1,7 +1,5 @@
 package com.ces.intern.sunsama.service.impl;
 
-import com.ces.intern.sunsama.SunsamaApplication;
-import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.entity.TaskEntity;
@@ -62,7 +60,7 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity newTask = modelMapper.map(request,TaskEntity.class);
         System.out.println("newTask" + newTask.toString());
         newTask.setUser(user);
-        newTask.setHastags(hashtagEntities);
+        newTask.setHashtags(hashtagEntities);
         TaskEntity taskCreated = taskRepository.save(newTask);
         log.debug("Task created: "+taskCreated);
         Collection<TaskEntity> userTasks = user.getTasks();

@@ -46,11 +46,11 @@ public class TaskEntity  {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @JoinTable(name = "task_hastag",
+    @JoinTable(name = "task_hashtag",
             joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "hastag_id")
+            inverseJoinColumns = @JoinColumn(name = "hashtag_id")
     )
-    private Collection<HashtagEntity> hastags;
+    private Collection<HashtagEntity> hashtags;
 
     @Override
     public boolean equals(Object obj) {

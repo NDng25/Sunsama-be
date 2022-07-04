@@ -2,12 +2,13 @@ package com.ces.intern.sunsama.service.impl;
 
 import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
-import com.ces.intern.sunsama.http.request.HashtagRequest;
 import com.ces.intern.sunsama.http.exception.AlreadyExistException;
-import com.ces.intern.sunsama.reponsitory.HashtagRepository;
+import com.ces.intern.sunsama.http.exception.NotFoundException;
+import com.ces.intern.sunsama.http.response.HashtagResponse;
+import com.ces.intern.sunsama.repository.HashtagRepository;
 import com.ces.intern.sunsama.service.HashtagService;
 import com.ces.intern.sunsama.util.ExceptionMessage;
-import com.ces.intern.sunsama.util.ReponseMessage;
+import com.ces.intern.sunsama.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import java.util.List;
 public class HashtagServiceImpl implements HashtagService
 {
 
-
     private final HashtagRepository hashtagRepository;
     private final ModelMapper modelMapper;
     @Autowired
@@ -32,28 +32,41 @@ public class HashtagServiceImpl implements HashtagService
 
     @Override
     public List getAllHashtag() {
-        List listHastag = new ArrayList<>();
+        List listHashtag = new ArrayList<>();
 
-        hashtagRepository.findAll().forEach(listHastag::add);
+        hashtagRepository.findAll().forEach(listHashtag::add);
 
-        Type listType = new TypeToken<List<HashtagDTO>>() {}.getType();
+        Type listType = new TypeToken<List<HashtagResponse>>() {}.getType();
 
-        List<HashtagDTO> projectDTOS = modelMapper.map(listHastag,listType);
-        return projectDTOS;
+        return  modelMapper.map(listHashtag,listType);
     }
 
     @Override
     @Transactional
-    public String save(HashtagRequest hashtagRequest) {
-        if(hashtagRepository.countByName(hashtagRequest.getName())>=1)
+    public String save(HashtagDTO hashtagDTO) {
+        if(hashtagRepository.countByName(hashtagDTO.getName())>=1)
         {
             throw new AlreadyExistException(ExceptionMessage.Hashtag_ALREADY_EXIST.getMessage());
         }
         else
         {
-            HashtagEntity hashtagEntity=modelMapper.map(hashtagRequest,HashtagEntity.class);
+            HashtagEntity hashtagEntity=modelMapper.map(hashtagDTO,HashtagEntity.class);
             hashtagRepository.save(hashtagEntity);
         }
-        return ReponseMessage.CREATE_SUCCESS;
+        return ResponseMessage.CREATE_SUCCESS;
+    }
+
+    @Override
+    public HashtagResponse update(HashtagResponse hashtagResponse) {
+    HashtagEntity hashtagEntity=hashtagRepository.findById(hashtagResponse.getId())
+            .orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_HASHTAG.getMessage()));
+    hashtagEntity.setName(hashtagResponse.getName());
+    hashtagRepository.save(hashtagEntity);
+    return hashtagResponse ;
+}
+
+    @Override
+    public void delete(Long id) {
+       hashtagRepository.deleteById(id);
     }
 }
