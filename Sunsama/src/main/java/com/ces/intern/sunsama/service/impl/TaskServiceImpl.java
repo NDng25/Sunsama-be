@@ -1,5 +1,6 @@
 package com.ces.intern.sunsama.service.impl;
 
+import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.entity.TaskEntity;
@@ -98,5 +99,11 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new NotFoundException("Invalid id"));
         taskEntity.getUser().getTasks().remove(taskEntity);
         taskRepository.deleteById(taskEntity.getId());
+    }
+
+    @Override
+    public List<HashtagDTO> getHashtagByTaskId(long id) {
+        List<HashtagEntity> hashtagEntities = hashtagRepository.getHashtagByTaskId(id);
+        return hashtagEntities.stream().map(hashtagEntity -> modelMapper.map(hashtagEntity,HashtagDTO.class)).toList();
     }
 }
