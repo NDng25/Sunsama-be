@@ -1,5 +1,6 @@
 package com.ces.intern.sunsama.service;
 
+import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.http.request.TaskRequest;
 import org.springframework.stereotype.Service;
@@ -12,4 +13,5 @@ public interface TaskService {
     TaskDTO createTask(TaskRequest request);
     TaskDTO updateTask(long id, TaskRequest request);
     void deleteTask(long id);
+    List<HashtagDTO> getHashtagByTaskId(long id);
 }

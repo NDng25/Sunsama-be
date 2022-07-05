@@ -1,10 +1,12 @@
 package com.ces.intern.sunsama.controller;
 
+import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.http.exception.BadRequestException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
 import com.ces.intern.sunsama.http.request.TaskRequest;
 import com.ces.intern.sunsama.http.response.TaskResponse;
+import com.ces.intern.sunsama.service.HashtagService;
 import com.ces.intern.sunsama.service.TaskService;
 import com.ces.intern.sunsama.util.ExceptionMessage;
 import com.ces.intern.sunsama.util.ResponseMessage;
@@ -66,5 +68,11 @@ public class TaskController {
         }
         return ResponseMessage.DELETE_SUCCESS;
     }
+
+    @GetMapping("/{taskId}/hashtags")
+    public List<HashtagDTO> getHashtagByTaskId(@PathVariable long taskId){
+        return taskService.getHashtagByTaskId(taskId);
+    }
+
 
 }
