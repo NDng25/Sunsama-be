@@ -23,6 +23,8 @@ public class TaskController {
     public TaskController(TaskService taskService, ModelMapper modelMapper) {
         this.taskService = taskService;
         this.modelMapper = modelMapper;
+        TypeMap<TaskDTO, TaskResponse> propertyMapper = this.modelMapper.createTypeMap(TaskDTO.class, TaskResponse.class);
+        propertyMapper.addMappings(mapper -> mapper.map(src -> src.getUser().getId(), TaskResponse::setUserId));
     }
 
     @GetMapping("/")
@@ -33,13 +35,23 @@ public class TaskController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{id}")
+    public TaskResponse getTask(@PathVariable long id){
+        TaskDTO taskDTO = taskService.getTaskById(id);
+        return modelMapper.map(taskDTO, TaskResponse.class);
+    }
+
     @PostMapping("/")
     public TaskResponse createTask(@RequestBody TaskRequest request){
         if(request.getTitle() == null) throw new BadRequestException("Request missing task's title");
-        TypeMap<TaskDTO, TaskResponse> propertyMapper = this.modelMapper.createTypeMap(TaskDTO.class, TaskResponse.class);
-        propertyMapper.addMappings(mapper -> mapper.map(src -> src.getUser().getId(), TaskResponse::setUserId));
         TaskDTO createdTask = taskService.createTask(request);
         return modelMapper.map(createdTask, TaskResponse.class);
+    }
+
+    @PutMapping("/{id}")
+    public TaskResponse updateTask(@PathVariable long id, @RequestBody TaskRequest request){
+        TaskDTO taskDTO = taskService.updateTask(id, request);
+        return modelMapper.map(taskDTO,TaskResponse.class);
     }
 
 }

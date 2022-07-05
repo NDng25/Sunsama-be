@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class HashtagResponse {
-    private Long id;
+    private long id;
     private String name;
 }

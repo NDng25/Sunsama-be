@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class TaskResponse {
     private Date date;
     private Date dueDate;
     private boolean isStatus;
-    private Collection<TaskDTO> subTasks;
+    private Collection<TaskDTO> subTasks = new ArrayList<>();
     private long userId;
-    private Collection<HashtagDTO> hashtags;
+    private Collection<HashtagDTO> hashtags = new ArrayList<>();
 }

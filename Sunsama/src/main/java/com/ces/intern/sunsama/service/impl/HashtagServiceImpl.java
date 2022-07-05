@@ -54,12 +54,12 @@ public class HashtagServiceImpl implements HashtagService
     }
 
     @Override
-    public HashtagDTO update(HashtagDTO hashtagDTO) {
-    HashtagEntity hashtagEntity=hashtagRepository.findById(hashtagDTO.getId())
+    public HashtagResponse update(HashtagResponse hashtagResponse) {
+    HashtagEntity hashtagEntity=hashtagRepository.findById(hashtagResponse.getId())
             .orElseThrow(()->new NotFoundException(ExceptionMessage.NOT_FOUND_HASHTAG.getMessage()));
-    hashtagEntity.setName(hashtagDTO.getName());
+    hashtagEntity.setName(hashtagResponse.getName());
     hashtagRepository.save(hashtagEntity);
-    return hashtagDTO ;
+    return hashtagResponse;
 }
 
     @Override
