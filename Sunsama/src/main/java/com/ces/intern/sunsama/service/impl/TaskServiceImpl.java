@@ -1,9 +1,12 @@
 package com.ces.intern.sunsama.service.impl;
 
+import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.entity.TaskEntity;
 import com.ces.intern.sunsama.entity.UserEntity;
+import com.ces.intern.sunsama.http.exception.AlreadyExistException;
+import com.ces.intern.sunsama.http.exception.BadRequestException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
 import com.ces.intern.sunsama.http.request.TaskRequest;
 import com.ces.intern.sunsama.repository.HashtagRepository;
@@ -98,5 +101,35 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new NotFoundException("Invalid id"));
         taskEntity.getUser().getTasks().remove(taskEntity);
         taskRepository.deleteById(taskEntity.getId());
+    }
+
+    @Override
+    public List<HashtagDTO> getHashtagByTaskId(long id) {
+        List<HashtagEntity> hashtagEntities = hashtagRepository.getHashtagByTaskId(id);
+        return hashtagEntities.stream().map(hashtagEntity -> modelMapper.map(hashtagEntity,HashtagDTO.class)).toList();
+    }
+
+    @Override
+    @Transactional
+    public void addHashtagToTask(long taskId, long hashtagId) {
+        TaskEntity task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new NotFoundException("Task not found"));
+        HashtagEntity hashtag = hashtagRepository.findById(hashtagId)
+                .orElseThrow(() -> new NotFoundException("Hashtag not found"));
+        if(task.getHashtags().stream().anyMatch((hashtagEntity -> hashtagEntity.getId() == hashtag.getId())))
+            throw new AlreadyExistException("Hashtag already exist in task");
+        task.getHashtags().add(hashtag);
+        taskRepository.save(task);
+    }
+
+    @Override
+    @Transactional
+    public void removeHashtagFromTask(long taskId, long hashtagId) {
+        TaskEntity task = taskRepository.getTaskHasHashtag(taskId, hashtagId);
+        if(task == null)
+            throw new NotFoundException("Does not exist task have this hashtag");
+        HashtagEntity hashtag = hashtagRepository.findById(hashtagId).get();
+        task.getHashtags().remove(hashtag);
+        taskRepository.save(task);
     }
 }
