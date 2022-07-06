@@ -15,4 +15,5 @@ public interface TaskService {
     void deleteTask(long id);
     List<HashtagDTO> getHashtagByTaskId(long id);
     void addHashtagToTask(long taskId, long hashtagId);
+    void removeHashtagFromTask(long taskId, long hashtagId);
 }
