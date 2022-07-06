@@ -9,15 +9,20 @@ import com.ces.intern.sunsama.http.exception.AlreadyExistException;
 import com.ces.intern.sunsama.http.exception.BadRequestException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
 import com.ces.intern.sunsama.http.request.TaskRequest;
+import com.ces.intern.sunsama.http.response.TaskResponse;
 import com.ces.intern.sunsama.repository.HashtagRepository;
 import com.ces.intern.sunsama.repository.TaskRepository;
 import com.ces.intern.sunsama.repository.UserRepository;
 import com.ces.intern.sunsama.service.TaskService;
+import com.ces.intern.sunsama.util.DateValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -131,5 +136,17 @@ public class TaskServiceImpl implements TaskService {
         HashtagEntity hashtag = hashtagRepository.findById(hashtagId).get();
         task.getHashtags().remove(hashtag);
         taskRepository.save(task);
+    }
+
+    @Override
+    public List<TaskDTO> getTasksByDate(String dateStr) {
+        List<TaskEntity> taskEntities = taskRepository.getTasksByDate(dateStr);
+        return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).toList();
+    }
+
+    @Override
+    public List<TaskDTO> getTasksByDueDate(String dateStr) {
+        List<TaskEntity> taskEntities = taskRepository.getTasksByDueDate(dateStr);
+        return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).toList();
     }
 }
