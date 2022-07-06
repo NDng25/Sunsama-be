@@ -16,4 +16,6 @@ public interface TaskService {
     List<HashtagDTO> getHashtagByTaskId(long id);
     void addHashtagToTask(long taskId, long hashtagId);
     void removeHashtagFromTask(long taskId, long hashtagId);
+    List<TaskDTO> getTasksByDate(String dateStr);
+    List<TaskDTO> getTasksByDueDate(String dateStr);
 }

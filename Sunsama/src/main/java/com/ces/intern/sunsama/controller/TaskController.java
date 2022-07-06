@@ -8,12 +8,15 @@ import com.ces.intern.sunsama.http.request.TaskRequest;
 import com.ces.intern.sunsama.http.response.TaskResponse;
 import com.ces.intern.sunsama.service.HashtagService;
 import com.ces.intern.sunsama.service.TaskService;
+import com.ces.intern.sunsama.util.DateValidator;
 import com.ces.intern.sunsama.util.ExceptionMessage;
 import com.ces.intern.sunsama.util.ResponseMessage;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,5 +98,21 @@ public class TaskController {
         catch(RuntimeException e){
             return e.getMessage();
         }
+    }
+
+    @GetMapping("/date/{dateStr}")
+    public List<TaskResponse> getTasksByDate(@PathVariable String dateStr){
+        if(!DateValidator.isValid(dateStr))
+            throw new BadRequestException("Invalid date format. Expected yyyy-MM-dd");
+        List<TaskDTO> taskDTOS = taskService.getTasksByDate(dateStr);
+        return taskDTOS.stream().map(taskDTO -> modelMapper.map(taskDTO, TaskResponse.class)).toList();
+    }
+
+    @GetMapping("/dueDate/{dateStr}")
+    public List<TaskResponse> getTasksByDueDate(@PathVariable String dateStr){
+        if(!DateValidator.isValid(dateStr))
+            throw new BadRequestException("Invalid date format. Expected yyyy-MM-dd");
+        List<TaskDTO> taskDTOS = taskService.getTasksByDueDate(dateStr);
+        return taskDTOS.stream().map(taskDTO -> modelMapper.map(taskDTO, TaskResponse.class)).toList();
     }
 }
