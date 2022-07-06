@@ -6,6 +6,7 @@ import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.entity.TaskEntity;
 import com.ces.intern.sunsama.entity.UserEntity;
 import com.ces.intern.sunsama.http.exception.AlreadyExistException;
+import com.ces.intern.sunsama.http.exception.BadRequestException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
 import com.ces.intern.sunsama.http.request.TaskRequest;
 import com.ces.intern.sunsama.repository.HashtagRepository;
@@ -118,6 +119,17 @@ public class TaskServiceImpl implements TaskService {
         if(task.getHashtags().stream().anyMatch((hashtagEntity -> hashtagEntity.getId() == hashtag.getId())))
             throw new AlreadyExistException("Hashtag already exist in task");
         task.getHashtags().add(hashtag);
+        taskRepository.save(task);
+    }
+
+    @Override
+    @Transactional
+    public void removeHashtagFromTask(long taskId, long hashtagId) {
+        TaskEntity task = taskRepository.getTaskHasHashtag(taskId, hashtagId);
+        if(task == null)
+            throw new NotFoundException("Does not exist task have this hashtag");
+        HashtagEntity hashtag = hashtagRepository.findById(hashtagId).get();
+        task.getHashtags().remove(hashtag);
         taskRepository.save(task);
     }
 }
