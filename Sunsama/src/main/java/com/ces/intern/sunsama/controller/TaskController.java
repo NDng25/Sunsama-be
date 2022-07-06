@@ -74,5 +74,15 @@ public class TaskController {
         return taskService.getHashtagByTaskId(taskId);
     }
 
+    @PostMapping("/{taskId}/hashtags/{hashtagId}")
+    public String addHashtagToTask(@PathVariable long taskId, @PathVariable long hashtagId){
+        try{
+            taskService.addHashtagToTask(taskId, hashtagId);
+            return ResponseMessage.ADD_SUCCESS;
+        }
+        catch (RuntimeException e){
+            return e.getMessage();
+        }
+    }
 
 }
