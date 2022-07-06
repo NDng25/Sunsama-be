@@ -85,4 +85,15 @@ public class TaskController {
         }
     }
 
+    @DeleteMapping("/{taskId}/hashtags/{hashtagId}")
+    public String removeHashtagFromTask(@PathVariable long taskId, @PathVariable long hashtagId)
+    {
+        try{
+            taskService.removeHashtagFromTask(taskId, hashtagId);
+            return ResponseMessage.DELETE_SUCCESS;
+        }
+        catch(RuntimeException e){
+            return e.getMessage();
+        }
+    }
 }
