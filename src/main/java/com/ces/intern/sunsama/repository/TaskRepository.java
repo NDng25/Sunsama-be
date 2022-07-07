@@ -26,4 +26,6 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     @Query(value = "DELETE FROM task WHERE task.parent_id=:taskId", nativeQuery = true)
     @Modifying
     void deleteAllSubtasksOfTask(@Param("taskId") long taskId);
+    @Query(value = "SELECT * FROM task WHERE task.parent_id=0", nativeQuery = true)
+    List<TaskEntity> getAllParentTask();
 }

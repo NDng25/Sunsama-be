@@ -47,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> getAllTask() {
-        List<TaskEntity> tasks = taskRepository.findAll();
+        List<TaskEntity> tasks = taskRepository.getAllParentTask();
         return tasks.stream().map(task -> modelMapper.map(task, TaskDTO.class)).collect(Collectors.toList());
     }
 
