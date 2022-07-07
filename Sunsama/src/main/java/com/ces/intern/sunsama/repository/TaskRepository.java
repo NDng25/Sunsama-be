@@ -1,5 +1,6 @@
 package com.ces.intern.sunsama.repository;
 
+import com.ces.intern.sunsama.entity.HashtagEntity;
 import com.ces.intern.sunsama.entity.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

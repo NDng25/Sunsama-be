@@ -33,14 +33,16 @@ public class TaskEntity  {
     private boolean isStatus;
 
 
-    @ManyToOne(cascade =CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.DETACH
+    }, fetch = FetchType.EAGER)
     @EqualsAndHashCode.Exclude
     @JoinColumn(name="user_id", nullable = false)
     private UserEntity user;
 
-
     @ManyToMany(cascade = {
-            CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.REFRESH,
             CascadeType.DETACH

@@ -8,6 +8,7 @@ import com.ces.intern.sunsama.entity.UserEntity;
 import com.ces.intern.sunsama.http.exception.AlreadyExistException;
 import com.ces.intern.sunsama.http.exception.BadRequestException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
+import com.ces.intern.sunsama.http.request.SubtaskRequest;
 import com.ces.intern.sunsama.http.request.TaskRequest;
 import com.ces.intern.sunsama.http.response.TaskResponse;
 import com.ces.intern.sunsama.repository.HashtagRepository;
@@ -17,6 +18,7 @@ import com.ces.intern.sunsama.service.TaskService;
 import com.ces.intern.sunsama.util.DateValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -154,5 +156,25 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskDTO> getSubtasksOfTask(long taskId) {
         List<TaskEntity> taskEntities = taskRepository.getSubtaskOfTask(taskId);
         return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).toList();
+    }
+
+    @Override
+    @Transactional
+    public TaskDTO addSubtaskToTask(long taskId, SubtaskRequest request) {
+        TaskEntity taskEntity = taskRepository.findById(taskId).orElseThrow(() -> new NotFoundException("Task does not exist"));
+        if(taskEntity.getParentId()!=0) throw new BadRequestException("This task already is a subtask");
+        if(request.getTitle()==null)
+            throw new BadRequestException("Missing title");
+        UserEntity user = userRepository.findById(taskEntity.getUser().getId()).get();
+        List<HashtagEntity> hashtags = hashtagRepository.getHashtagByTaskId(taskEntity.getId());
+        TaskEntity newTask = modelMapper.map(request, TaskEntity.class);
+        newTask.setParentId(taskEntity.getId());
+        newTask.setDate(taskEntity.getDate());
+        newTask.setDueDate(taskEntity.getDueDate());
+        newTask.setStatus(taskEntity.isStatus());
+        newTask.setUser(user);
+        newTask.setHashtags(hashtags);
+        TaskEntity createdTask = taskRepository.save(newTask);
+        return modelMapper.map(createdTask, TaskDTO.class);
     }
 }
