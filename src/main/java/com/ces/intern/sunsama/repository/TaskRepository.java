@@ -18,4 +18,6 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     List<TaskEntity> getTasksByDate(@Param("date") String date);
     @Query(value = "SELECT * FROM task WHERE task.due_date LIKE :date%", nativeQuery = true)
     List<TaskEntity> getTasksByDueDate(@Param("date") String date);
+    @Query(value = "SELECT * FROM task WHERE task.parent_id=:taskId", nativeQuery = true)
+    List<TaskEntity> getSubtaskOfTask(@Param("taskId") long taskId);
 }

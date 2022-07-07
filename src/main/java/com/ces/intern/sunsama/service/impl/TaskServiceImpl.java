@@ -149,4 +149,10 @@ public class TaskServiceImpl implements TaskService {
         List<TaskEntity> taskEntities = taskRepository.getTasksByDueDate(dateStr);
         return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).toList();
     }
+
+    @Override
+    public List<TaskDTO> getSubtasksOfTask(long taskId) {
+        List<TaskEntity> taskEntities = taskRepository.getSubtaskOfTask(taskId);
+        return taskEntities.stream().map(task -> modelMapper.map(task, TaskDTO.class)).toList();
+    }
 }
