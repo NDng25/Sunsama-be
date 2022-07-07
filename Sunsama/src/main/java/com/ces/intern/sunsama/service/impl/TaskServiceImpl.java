@@ -168,14 +168,14 @@ public class TaskServiceImpl implements TaskService {
             throw new BadRequestException("Missing title");
         UserEntity user = userRepository.findById(taskEntity.getUser().getId()).get();
         List<HashtagEntity> hashtags = hashtagRepository.getHashtagByTaskId(taskEntity.getId());
-        TaskEntity newTask = modelMapper.map(request, TaskEntity.class);
-        newTask.setParentId(taskEntity.getId());
-        newTask.setDate(taskEntity.getDate());
-        newTask.setDueDate(taskEntity.getDueDate());
-        newTask.setStatus(taskEntity.isStatus());
-        newTask.setUser(user);
-        newTask.setHashtags(hashtags);
-        TaskEntity createdTask = taskRepository.save(newTask);
+        TaskEntity newSubtask = modelMapper.map(request, TaskEntity.class);
+        newSubtask.setParentId(taskEntity.getId());
+        newSubtask.setDate(taskEntity.getDate());
+        newSubtask.setDueDate(taskEntity.getDueDate());
+        newSubtask.setStatus(taskEntity.isStatus());
+        newSubtask.setUser(user);
+        newSubtask.setHashtags(hashtags);
+        TaskEntity createdTask = taskRepository.save(newSubtask);
         return modelMapper.map(createdTask, TaskDTO.class);
     }
 }
