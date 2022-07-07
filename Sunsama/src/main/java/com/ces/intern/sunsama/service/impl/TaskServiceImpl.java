@@ -107,6 +107,7 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity taskEntity = taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Invalid id"));
         taskEntity.getUser().getTasks().remove(taskEntity);
+        taskRepository.deleteAllSubtasksOfTask(taskEntity.getId());
         taskRepository.deleteById(taskEntity.getId());
     }
 
