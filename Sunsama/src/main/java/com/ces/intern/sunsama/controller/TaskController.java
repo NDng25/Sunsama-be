@@ -115,4 +115,10 @@ public class TaskController {
         List<TaskDTO> taskDTOS = taskService.getTasksByDueDate(dateStr);
         return taskDTOS.stream().map(taskDTO -> modelMapper.map(taskDTO, TaskResponse.class)).toList();
     }
+
+    @GetMapping("/{taskId}/subtasks")
+    public List<TaskResponse> getSubtasksOfTask(@PathVariable long taskId){
+        List<TaskDTO> taskDTOS = taskService.getSubtasksOfTask(taskId);
+        return taskDTOS.stream().map(taskDTO -> modelMapper.map(taskDTO, TaskResponse.class)).toList();
+    }
 }
