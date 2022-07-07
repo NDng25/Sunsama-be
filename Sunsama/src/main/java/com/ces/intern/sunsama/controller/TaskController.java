@@ -4,6 +4,7 @@ import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
 import com.ces.intern.sunsama.http.exception.BadRequestException;
 import com.ces.intern.sunsama.http.exception.NotFoundException;
+import com.ces.intern.sunsama.http.request.SubtaskRequest;
 import com.ces.intern.sunsama.http.request.TaskRequest;
 import com.ces.intern.sunsama.http.response.TaskResponse;
 import com.ces.intern.sunsama.service.HashtagService;
@@ -114,5 +115,17 @@ public class TaskController {
             throw new BadRequestException("Invalid date format. Expected yyyy-MM-dd");
         List<TaskDTO> taskDTOS = taskService.getTasksByDueDate(dateStr);
         return taskDTOS.stream().map(taskDTO -> modelMapper.map(taskDTO, TaskResponse.class)).toList();
+    }
+
+    @GetMapping("/{taskId}/subtasks")
+    public List<TaskResponse> getSubtasksOfTask(@PathVariable long taskId){
+        List<TaskDTO> taskDTOS = taskService.getSubtasksOfTask(taskId);
+        return taskDTOS.stream().map(taskDTO -> modelMapper.map(taskDTO, TaskResponse.class)).toList();
+    }
+
+    @PostMapping("/{taskId}/subtasks")
+    public TaskResponse addSubtaskToTask(@PathVariable long taskId,@RequestBody SubtaskRequest request){
+        TaskDTO taskDTO = taskService.addSubtaskToTask(taskId, request);
+        return modelMapper.map(taskDTO, TaskResponse.class);
     }
 }

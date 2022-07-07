@@ -2,7 +2,9 @@ package com.ces.intern.sunsama.service;
 
 import com.ces.intern.sunsama.dto.HashtagDTO;
 import com.ces.intern.sunsama.dto.TaskDTO;
+import com.ces.intern.sunsama.http.request.SubtaskRequest;
 import com.ces.intern.sunsama.http.request.TaskRequest;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,4 +20,6 @@ public interface TaskService {
     void removeHashtagFromTask(long taskId, long hashtagId);
     List<TaskDTO> getTasksByDate(String dateStr);
     List<TaskDTO> getTasksByDueDate(String dateStr);
+    List<TaskDTO> getSubtasksOfTask(long taskId);
+    TaskDTO addSubtaskToTask(long taskId, SubtaskRequest request);
 }
