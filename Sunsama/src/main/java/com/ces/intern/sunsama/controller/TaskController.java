@@ -128,4 +128,15 @@ public class TaskController {
         TaskDTO taskDTO = taskService.addSubtaskToTask(taskId, request);
         return modelMapper.map(taskDTO, TaskResponse.class);
     }
+
+    @PostMapping("/{taskId}/complete")
+    public String setTaskComplete(@PathVariable long taskId){
+        try{
+            taskService.setTaskComplete(taskId);
+        }
+        catch (RuntimeException e) {
+            return e.getMessage();
+        }
+        return ResponseMessage.UPDATE_SUCCESS;
+    }
 }

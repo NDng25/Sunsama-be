@@ -22,4 +22,6 @@ public interface TaskService {
     List<TaskDTO> getTasksByDueDate(String dateStr);
     List<TaskDTO> getSubtasksOfTask(long taskId);
     TaskDTO addSubtaskToTask(long taskId, SubtaskRequest request);
+    void setTaskComplete(long taskId);
+
 }
