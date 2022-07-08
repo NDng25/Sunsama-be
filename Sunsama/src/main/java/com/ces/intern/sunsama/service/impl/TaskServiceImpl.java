@@ -178,4 +178,26 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity createdTask = taskRepository.save(newSubtask);
         return modelMapper.map(createdTask, TaskDTO.class);
     }
+
+    @Override
+    @Transactional
+    public void setTaskComplete(long taskId) {
+        TaskEntity task = taskRepository.findById(taskId).orElseThrow(() -> new NotFoundException("Task not exist"));
+        List<TaskEntity> subtasks = new ArrayList<>();
+        if(task.getParentId() == 0){
+            subtasks = taskRepository.findAll().stream().filter(st -> st.getParentId()==task.getId()).toList();
+            if(!subtasks.isEmpty()){
+                for (TaskEntity subtask :
+                        subtasks) {
+                    subtask.setStatus(true);
+                }
+                taskRepository.saveAll(subtasks);
+            }
+            task.setStatus(true);
+        }
+        else{
+            task.setStatus(true);
+        }
+        taskRepository.save(task);
+    }
 }
