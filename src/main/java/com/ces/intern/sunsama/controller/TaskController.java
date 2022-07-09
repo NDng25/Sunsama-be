@@ -61,7 +61,6 @@ public class TaskController {
         TaskDTO taskDTO = taskService.updateTask(id, request);
         return modelMapper.map(taskDTO,TaskResponse.class);
     }
-
     @DeleteMapping("/{id}")
     public String deleteTask(@PathVariable long id){
         try{
