@@ -57,6 +57,11 @@
             <artifactId>modelmapper</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.4.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -64,6 +69,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+
                 <configuration>
                     <excludes>
                         <exclude>
@@ -71,6 +77,14 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>3.0.3</version>
+                <configuration>
+                    <appName>sunsama-demo</appName>
                 </configuration>
             </plugin>
         </plugins>
