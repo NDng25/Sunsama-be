@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SunsamaApplication {
-//
-//    private  static  final Logger log = LoggerFactory.getLogger(SunsamaApplication.class);
+
+    private  static  final Logger log = LoggerFactory.getLogger(SunsamaApplication.class);
     public static void main(String[] args) {
         SpringApplication.run(SunsamaApplication.class, args);
     }
@@ -28,12 +28,12 @@ public class SunsamaApplication {
         return modelMapper;
     }
 
-//    @Bean
-//    CommandLineRunner initDatabase(UserRepository repository) {
-//
-//        return args -> {
-//            log.info("Preloading " + repository.save(new UserEntity(1L,"test user","123123",null)));
-//        };
-//    }
+    @Bean
+    CommandLineRunner initDatabase(UserRepository repository) {
+
+        return args -> {
+            log.info("Preloading " + repository.save(new UserEntity(1L,"test user","123123",null)));
+        };
+    }
 
 }
