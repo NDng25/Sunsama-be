@@ -17,9 +17,9 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
     @Query(value = "SELECT * FROM task JOIN task_hashtag ON task.id = task_hashtag.task_id WHERE id=:task_id AND hashtag_id = :hashtag_id", nativeQuery = true)
     TaskEntity getTaskHasHashtag(@Param("task_id") long taskId, @Param("hashtag_id") long hashtagId);
-    @Query(value = "SELECT * FROM task WHERE task.date LIKE :date% AND task.parent_id=0", nativeQuery = true)
+    @Query(value = "SELECT * FROM task WHERE task.date::text LIKE :date% AND task.parent_id=0", nativeQuery = true)
     List<TaskEntity> getTasksByDate(@Param("date") String date);
-    @Query(value = "SELECT * FROM task WHERE task.due_date LIKE :date% AND task.parent_id=0", nativeQuery = true)
+    @Query(value = "SELECT * FROM task WHERE task.due_date::text LIKE :date% AND task.parent_id=0", nativeQuery = true)
     List<TaskEntity> getTasksByDueDate(@Param("date") String date);
     @Query(value = "SELECT * FROM task WHERE task.parent_id=:taskId", nativeQuery = true)
     List<TaskEntity> getSubtaskOfTask(@Param("taskId") long taskId);
